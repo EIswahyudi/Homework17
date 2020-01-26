@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const db = require('../models/');
+const Workout = require("../models");
 const path = require("path");
 
 router.get("/", (req, res) => {
@@ -14,12 +14,15 @@ router.get("/stats", (req, res) => {
     res.sendFile(path.join(__dirname + "/../public/stats.html"));
 });
 
-router.get("/api/workouts", (req, res) => {
-    db.Workout.find({}).sort({ day: 1 })
-        .then(workouts => {
-            console.log(workouts);
-            res.json(workouts);
-        });
+
+router.get("api/workouts", (req, res) => {
+    Workout.find({})
+        .then(dbWorkout => {
+            res.json(dbWorkout);
+        })
+        .catch(err => {
+            res.json(err)
+        }); 
 });
 
 router.put("/api/workouts/:id", (req, res) => {
@@ -43,13 +46,13 @@ router.post("/api/workouts", (req, res) => {
     });
 });
 
-router.get("/api/workouts/range", (req, res) => {
-    db.Workout.find({})
-        .then(workouts => {
-            console.log(workouts);
-            res.json(workouts);
-        });
-});
+// router.get("/api/workouts/range", (req, res) => {
+//     db.Workout.find({})
+//         .then(workouts => {
+//             console.log(workouts);
+//             res.json(workouts);
+//         });
+// });
 
 module.exports = router;
 
@@ -84,16 +87,4 @@ module.exports = router;
 //         });
 // });
 
-// // Router.delete('api/workouts', (req, res) => {
-// //     Workout.delete({})
-// //     .then(dbWorkout => {
-// //         res.json(dbWorkout);
-// //         })
-// //         .catch(err => {
-// //             res.json(err);
-// //         });
-// // });
-
-
-// module.exports = router;
 
