@@ -1,4 +1,4 @@
-// const router = require('express').Router();
+const router = require('express').Router();
 const Workout = require("../models/workout.js");
 const mongojs = require("mongojs")
 
@@ -17,6 +17,7 @@ module.exports = function (app) {
     app.put("/api/workouts/:id", (req, res) => {
         //MongoDB to show specific workout
         console.log(req.body);
+        console.log(req.params.id);
         Workout.findOneAndUpdate({
             _id: mongojs.ObjectId(req.params.id)
         },

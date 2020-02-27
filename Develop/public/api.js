@@ -7,32 +7,33 @@ const API = {
   },
   async addExercise(data) {
     const id = location.search.split("=")[1];
+    if (id) {
+      const res = await fetch("/api/workouts/" + id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
 
-    const res = await fetch("/api/workouts/" + id, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
+      const json = await res.json();
 
-    const json = await res.json();
+      return json;
+    } else {
+      const res = await fetch("/api/workouts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
 
-    return json;
-  },
-  async createWorkout() {
-    const res = await fetch("/api/workouts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" }
-    });
+      const json = await res.json();
 
-    const json = await res.json();
-
-    return json;
+      return json;
+    }
   },
 
   async getWorkoutsInRange() {
     const res = await fetch(`/api/workouts/range`);
     const json = await res.json();
-    
+
     return json;
   },
 };
