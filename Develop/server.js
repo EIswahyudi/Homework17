@@ -7,6 +7,9 @@ const PORT = process.env.PORT || 4000;
 const app = express();
 
 // app.use(logger("dev"));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
